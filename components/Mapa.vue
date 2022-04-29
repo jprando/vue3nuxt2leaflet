@@ -19,7 +19,7 @@ if (process.client) {
   onMounted(async () => {
     mapId.value = `map_${Date.now()}`;
 
-    const { control, map, tileLayer, divIcon, marker } = await import(
+    const { control, map, tileLayer, divIcon, marker, polyline } = await import(
       "leaflet/src/Leaflet"
     );
     let markerCenter = null;
@@ -27,7 +27,7 @@ if (process.client) {
     _map = map(mapId.value, {
       zoomControl: false,
       attributionControl: true,
-    }).setView([-20.361876858973783, -40.662597119808204], 17);
+    }).setView([-20.361876858973783, -40.662597119808204], 18);
 
     _map
       // .on("click", () => {
@@ -85,21 +85,36 @@ if (process.client) {
         .addTo(_map);
     }
 
+    let trace = null; // polyline([]).addTo(_map);
     _map
-      .locate({ enableHighAccuracy: true, watch: true, setView: true })
+      .locate({
+        enableHighAccuracy: true,
+        watch: true,
+        timeout: 20000,
+        setView: true,
+        maxZoom: 18,
+      })
       .on("locationfound", (ev) => {
-        marker(ev.latlng).addTo(_map);
         const { latitude, longitude } = ev;
-        router.push(`?lat=${latitude}&lng=${longitude}&z=17`);
-        _map.setZoom(17);
+        console.log([latitude, longitude]);
+        if (!trace) {
+          trace = polyline([[latitude, longitude]]).addTo(_map);
+          marker([latitude, longitude]).addTo(_map);
+        } else {
+          trace.addLatLng([latitude, longitude]);
+        }
+        _map.setView([latitude, longitude], 18);
+        const zoom = _map.getZoom();
+        router.push(`?lat=${latitude}&lng=${longitude}&z=${zoom}`);
+        // _map.setZoom(17);
       })
       .on("locationerror", () => {
         alert("initial location error");
-        _map.setView([-20.361876858973783, -40.662597119808204], 17);
+        // _map.setView([-20.361876858973783, -40.662597119808204], 18);
       });
   });
   onUnmounted(() => {
-    _map.value.remove();
+    // _map.value.remove();
   });
 }
 </script>
