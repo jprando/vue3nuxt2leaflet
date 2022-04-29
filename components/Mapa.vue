@@ -56,7 +56,7 @@ if (process.client) {
       .on("mouseup", function (ev) {
         const { lat, lng } = _map.getCenter();
         const zoom = _map.getZoom();
-        router.push(`/?lat=${lat}&lng=${lng}&z=${zoom}`);
+        router.push(`?lat=${lat}&lng=${lng}&z=${zoom}`);
         if (markerCenter) {
           markerCenter.remove();
         }
@@ -90,7 +90,7 @@ if (process.client) {
       .on("locationfound", (ev) => {
         marker(ev.latlng).addTo(_map);
         const { latitude, longitude } = ev;
-        router.push(`/?lat=${latitude}&lng=${longitude}&z=17`);
+        router.push(`?lat=${latitude}&lng=${longitude}&z=17`);
         _map.setZoom(17);
       })
       .on("locationerror", () => {
