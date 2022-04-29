@@ -4,6 +4,7 @@ import { defineNuxtConfig } from "nuxt";
 
 export default defineNuxtConfig({
   app: {
+    buildAssetsDir: "/",
     cdnURL: "https://jprando.github.io/vue3nuxt3leaflet",
   },
 });
