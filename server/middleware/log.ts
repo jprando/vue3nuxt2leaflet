@@ -1,4 +1,4 @@
-import { useServerContext } from "@/composables/serverjContext";
+import { useServerContext } from "@/composables/serverContext";
 
 const inDevMode = process.env.NODE_ENV !== "production";
 

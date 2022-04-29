@@ -1,4 +1,4 @@
-import { useServerContext } from "@/composables/serverjContext";
+import { useServerContext } from "@/composables/serverContext";
 
 // https://v3.nuxtjs.org/guide/features/server-routes#example
 
